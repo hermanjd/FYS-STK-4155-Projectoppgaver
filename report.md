@@ -5,9 +5,7 @@ Data Analysis and Machine Learingin FYS-STK3155
 Project 1 on Machine Learning
 
 By:
-Herman Dragland
-Kristine Ingeborg Sundet
-Harith Elamin
+Herman Dragland, Kristine Ingeborg Sundet, and Harith Elamin
 
 ## Abstract
 *Abstract: accurate and informative? Total number of possible points: 5*
