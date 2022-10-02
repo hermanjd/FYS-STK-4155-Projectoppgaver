@@ -29,12 +29,33 @@ def findBetaValues(X,y):
 	B = np.matmul(XTY,y)
 	return B
 
-N = 10000000
+def findY(X,b):
+	values = []
+	for index_row, element_row in enumerate(X):
+		row = 0.0;
+		for index_column, element_column in enumerate(element_row):
+			row = row + (element_column*b[index_column])
+		values.append(row)
+	return values
+
+def evaluateMSE(Y,y):
+	sum = 0.0
+	length = len(Y)
+	for i in range(length):
+		sum = sum + pow((Y[i]-y[i]),2)
+	return sum * (1/length)
+
+N = 1000000
 x = np.random.uniform(0, 1, N)
 y = np.random.uniform(0, 1, N)
 z = FrankeFunction(x,y)
 X = create_X(x,y,5)
 
 B = findBetaValues(X,z)
-print(B)
+#print(B)
 
+Y = findY(X,B)
+#print(z)
+#print(Y)
+mse = evaluateMSE(z,Y)
+print(mse)
