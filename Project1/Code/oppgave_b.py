@@ -38,12 +38,29 @@ def findY(X,b):
 		values.append(row)
 	return values
 
+
+def evaluateMean(Y):
+	sum = 0.0
+	length = len(Y)
+	for i in range(length):
+		sum = sum + Y[i]
+	return sum * (1/length)
+
 def evaluateMSE(Y,y):
 	sum = 0.0
 	length = len(Y)
 	for i in range(length):
 		sum = sum + pow((Y[i]-y[i]),2)
 	return sum * (1/length)
+
+def evaluateRSquared(Y,y):
+	MSE = evaluateMSE(Y,y)
+	mean = evaluateMean(Y)
+	sum = 0.0
+	length = len(Y)
+	for i in range(length):
+		sum = sum + pow((Y[i]-mean),2)
+	return 1 - (MSE/sum)
 
 N = 1000000
 x = np.random.uniform(0, 1, N)
@@ -57,5 +74,5 @@ B = findBetaValues(X,z)
 Y = findY(X,B)
 #print(z)
 #print(Y)
-mse = evaluateMSE(z,Y)
+mse = evaluateRSquared(z,Y)
 print(mse)
