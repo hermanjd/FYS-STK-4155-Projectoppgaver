@@ -4,11 +4,11 @@ import numpy as np
 from FrankeFunction import FrankeFunctionWithNoise, FrankeFunction
 from MakeDesignMatrix import makeDesignMatrix
 
+#Function for making design matrix (stolen from code examples)
 def create_X(x, y, n ):
 	if len(x.shape) > 1:
 		x = np.ravel(x)
 		y = np.ravel(y)
-
 	N = len(x)
 	l = int((n+1)*(n+2)/2)		# Number of elements in beta
 	X = np.ones((N,l))
@@ -20,6 +20,7 @@ def create_X(x, y, n ):
 
 	return X
 
+#function for finding betavalues (Takes in a design matrix and the y values)
 def findBetaValues(X,y):
 	XT = X.transpose()
 	core = np.matmul(XT, X)
@@ -28,6 +29,7 @@ def findBetaValues(X,y):
 	B = np.matmul(XTY,y)
 	return B
 
+#This function finds the values to the estimated function ( y = Xb ) (Takes in the designmatrix and the betavalues)
 def findY(X,b):
 	values = []
 	for index_row, element_row in enumerate(X):
@@ -37,6 +39,7 @@ def findY(X,b):
 		values.append(row)
 	return values
 
+#Evaluate the mean
 def evaluateMean(Y):
 	sum = 0.0
 	length = len(Y)
@@ -44,6 +47,7 @@ def evaluateMean(Y):
 		sum = sum + Y[i]
 	return sum * (1/length)
 
+#Evaluates the mean squared error
 def evaluateMSE(Y,y):
 	sum = 0.0
 	length = len(Y)
@@ -51,6 +55,7 @@ def evaluateMSE(Y,y):
 		sum = sum + pow((Y[i]-y[i]),2)
 	return sum * (1/length)
 
+#Evaluates the Rsquared 
 def evaluateRSquared(Y,y):
 	MSE = evaluateMSE(Y,y)
 	mean = evaluateMean(Y)
