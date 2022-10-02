@@ -4,7 +4,6 @@ import numpy as np
 from FrankeFunction import FrankeFunctionWithNoise, FrankeFunction
 from MakeDesignMatrix import makeDesignMatrix
 
-
 def create_X(x, y, n ):
 	if len(x.shape) > 1:
 		x = np.ravel(x)
@@ -38,7 +37,6 @@ def findY(X,b):
 		values.append(row)
 	return values
 
-
 def evaluateMean(Y):
 	sum = 0.0
 	length = len(Y)
@@ -69,10 +67,6 @@ z = FrankeFunction(x,y)
 X = create_X(x,y,5)
 
 B = findBetaValues(X,z)
-#print(B)
-
 Y = findY(X,B)
-#print(z)
-#print(Y)
 mse = evaluateRSquared(z,Y)
 print(mse)
