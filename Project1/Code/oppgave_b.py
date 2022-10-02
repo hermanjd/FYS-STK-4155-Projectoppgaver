@@ -17,7 +17,6 @@ def create_X(x, y, n ):
 	for i in range(1,n+1):
 		q = int((i)*(i+1)/2)
 		for k in range(i+1):
-			print("x^" + str(i-k) + "*y^" + str(k))
 			X[:,q+k] = (x**(i-k))*(y**k)
 
 	return X
