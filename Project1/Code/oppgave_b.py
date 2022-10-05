@@ -4,20 +4,16 @@ import numpy as np
 import StatFunctions
 from sklearn.model_selection import train_test_split
 
-N = 50
+N = 100
 x = np.random.uniform(0, 1, N)
 y = np.random.uniform(0, 1, N)
 z = StatFunctions.FrankeFunctionWithNoise(x,y,0.1) #adding some noise to the data
-
+x_train, x_test, y_train, y_test, z_train, z_test = train_test_split(x,y,z,test_size=0.2)
 for i in range(0, 6):
-	X = StatFunctions.create_X(x,y,i)
-	X_train, X_test, z_train, z_test = train_test_split(X,z,test_size=0.2)
-	B = StatFunctions.findBetaValues(X_train,z_train)
-	YTrain = StatFunctions.findY(X_train,B)
-	Y = StatFunctions.findY(X_test,B)
-	mseTrain = StatFunctions.evaluateMSE(z_train,YTrain)
+	X = StatFunctions.create_X(x_train,y_train,i)
+	B = StatFunctions.findBetaValues(X,z_train)
+	testMatrix = StatFunctions.create_X(x_test,y_test,i)
+	Y = StatFunctions.findY(testMatrix,B)
 	mse = StatFunctions.evaluateMSE(z_test,Y)
-	RSquaredTrain = StatFunctions.evaluateRSquared(z_train,YTrain)
 	RSquared = StatFunctions.evaluateRSquared(z_test,Y)
-	print("TRAIN Polynomial degree: {} Mean square error: {} RSquared: {}".format(i,mseTrain,RSquaredTrain))
 	print("TEST- Polynomial degree: {} Mean square error: {} RSquared: {}".format(i,mse,RSquared))
