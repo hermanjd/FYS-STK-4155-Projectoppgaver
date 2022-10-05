@@ -21,7 +21,6 @@ polydegree = np.zeros(polynomialDegrees+1)
 for i in range(0, polynomialDegrees+1):
     print("-----------Polynomial degree: {}-------------------".format(i))
     z_pred = []
-    
     for j in range(N):
         x_, y_, z_ = resample(x_train, y_train, z_train)
         designMatrix = StatFunctions.create_X(x_,y_,i)
@@ -44,9 +43,6 @@ for i in range(0, polynomialDegrees+1):
     error[i] = temp_error
     bias[i] = temp_bias
     variance[i] = temp_variance
-    #print(np.mean( np.mean((arr - z_pred)**2, axis=1, keepdims=True) ))
-    
-
 
 plt.plot(polydegree, error, label='Error')
 plt.plot(polydegree, bias, label='bias')
