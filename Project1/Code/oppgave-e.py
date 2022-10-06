@@ -8,6 +8,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 from scipy import misc
+import StatFunctions
 
 
 def FrankeFunction(x,y):
@@ -47,7 +48,15 @@ def RidgeRegression(x, y, z, degree=5, alpha=10**(-6), verbose=False):
         print ("M: ", np.shape(M))
         print ("M_: ", np.shape(M_))
         print ("predict: ", np.shape(predict))
-
+    
+    # show pilot
+    poly = PolynomialFeatures(degree)
+    x_, y_ = np.meshgrid(x, y)
+    x = x_.reshape(-1,1)
+    y = y_.reshape(-1,1)
+    M = np.c_[x, y]
+    M_ = poly.fit_transform(M)
+    predict = M_.dot(beta.T)
     return beta
 
 
@@ -56,8 +65,13 @@ if __name__ == '__main__':
     y = np.arange(0, 1, 0.05).reshape((20,1))
 
     z = FrankeFunction(x,y)
-    beta = RidgeRegression(x,y,z,5,5**(-6),True)
+    beta = RidgeRegression(x,y,z,5,5**(-3),True)
+    mse = StatFunctions.evaluateMSE(x,y)
+    print(mse)
     print (beta)
 
     beta_list = beta.ravel().tolist()
     print ("ok")
+
+    
+

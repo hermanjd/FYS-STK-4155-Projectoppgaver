@@ -73,3 +73,4 @@ def FrankeFunction(x,y):
 def FrankeFunctionWithNoise(x,y,noise):
     frank = FrankeFunction(x,y)
     return frank + np.random.normal(0, noise, frank.shape)
+
