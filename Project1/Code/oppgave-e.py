@@ -11,14 +11,6 @@ from scipy import misc
 import StatFunctions
 
 
-def FrankeFunction(x,y):
-	term1 = 0.75*np.exp(-(0.25*(9*x-2)**2) - 0.25*((9*y-2)**2))
-	term2 = 0.75*np.exp(-((9*x+1)**2)/49.0 - 0.1*(9*y+1))
-	term3 = 0.5*np.exp(-(9*x-7)**2/4.0 - 0.25*((9*y-3)**2))
-	term4 = -0.2*np.exp(-(9*x-4)**2 - (9*y-7)**2)
-	return term1 + term2 + term3 + term4
-
-
 def FindBeta(x, y, degree, alpha):
     X = np.c_[x,y]
     poly = PolynomialFeatures(degree)
@@ -31,7 +23,7 @@ def RidgeRegression(x, y, z, degree=5, alpha=10**(-6), verbose=False):
     # Split data
     x_train = np.random.rand(100,1)
     y_train = np.random.rand(100,1)
-    z = FrankeFunction(x_train,y_train)
+    z = StatFunctions.FrankeFunction(x_train,y_train)
     beta = FindBeta(x, y, degree, alpha)
 
     # show pilot
@@ -64,7 +56,7 @@ if __name__ == '__main__':
     x = np.arange(0, 1, 0.05).reshape((20,1))
     y = np.arange(0, 1, 0.05).reshape((20,1))
 
-    z = FrankeFunction(x,y)
+    z = StatFunctions.FrankeFunction(x,y)
     beta = RidgeRegression(x,y,z,5,5**(-3),True)
     mse = StatFunctions.evaluateMSE(x,y)
     print(mse)

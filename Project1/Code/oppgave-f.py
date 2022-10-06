@@ -6,13 +6,14 @@ from sklearn import linear_model
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import PolynomialFeatures
+import StatFunctions
 
 
-def LassoRegression(x, y, z, degree=5, alpha=10**(-3), verbose=False):
+def LassoRegression(x, y, z, degree=5, alpha=10**(7), verbose=False):
     # Split into training and test
     x_train = np.random.rand(100,1)
     y_train = np.random.rand(100,1)
-    z = FrankeFunction(x_train,y_train)
+    z = StatFunctions.FrankeFunction(x_train,y_train)
 
     # train and find design matrix X_
     X = np.c_[x_train,y_train]
@@ -41,7 +42,7 @@ def LassoRegression(x, y, z, degree=5, alpha=10**(-3), verbose=False):
     # plot
     fig = plt.figure()
     ax = fig.gca(projection='3d')
-    ax.plot_surface(x_,y_,predict.reshape(25,25),
+    ax.plot_surface(x_,y_,predict.reshape(20,20),
     linewidth=0,
     antialiased=False)
     plt.show()
@@ -51,7 +52,7 @@ def LassoRegression(x, y, z, degree=5, alpha=10**(-3), verbose=False):
 if __name__ == '__main__':
     x = np.arange(0, 1, 0.05).reshape((20,1))
     y = np.arange(0, 1, 0.05).reshape((20,1))
-    z = FrankeFunction(x,y)
-    beta, design = LassoRegression(x,y,z,5,alpha=10**(4),verbose=True)
+    #z = StatFunctionsc.(x,y)
+    beta, design = LassoRegression(x,y,5,alpha=10**(9),verbose=True)
    
     print ("ok")
