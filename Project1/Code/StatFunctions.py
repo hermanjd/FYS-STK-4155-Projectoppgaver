@@ -2,7 +2,6 @@ import numpy as np
 from matplotlib import cm
 import numpy as np
 
-from Project1.Code.oppgave_b import N
 
 #Function for making design matrix (stolen from code examples)
 def create_X(x, y, n ):

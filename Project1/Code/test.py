@@ -10,7 +10,7 @@ from random import random, seed
 import FF
 from FF import *
 from PolynomialFittingData import *
-import Lasso
+import StatFunctions
 
 
 # Create Data
@@ -36,4 +36,11 @@ variance = np.zeros(polynomialDegrees+1)
 polydegree = np.zeros(polynomialDegrees+1)
 
 
-
+#BootstraFunction test
+datapoints = 10000
+#set the mean value to 80
+#set deviation to 7
+mu, sigma = 80, 7
+#generate random numbers
+x = mu + sigma*np.random.randn(datapoints)
+object = StatFunctions.BootstraFunction(x, datapoints)

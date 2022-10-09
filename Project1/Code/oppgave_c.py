@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 import matplotlib.pyplot as plt
 
-N = 50
+N = 150
 polynomialDegrees = 5
 x = np.random.uniform(0, 1, N)
 y = np.random.uniform(0, 1, N)
