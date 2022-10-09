@@ -2,6 +2,8 @@ import numpy as np
 from matplotlib import cm
 import numpy as np
 
+from Project1.Code.oppgave_b import N
+
 #Function for making design matrix (stolen from code examples)
 def create_X(x, y, n ):
 	if len(x.shape) > 1:
@@ -74,3 +76,11 @@ def FrankeFunctionWithNoise(x,y,noise):
     frank = FrankeFunction(x,y)
     return frank + np.random.normal(0, noise, frank.shape)
 
+def BootstraFunction(data, datapoints):
+	t = np.zeros(datapoints)
+	n= len(data)
+	for i in range (datapoints):
+		t[i]=np.mean(data[np.random.randint(0,n,n)])
+	# analysis    
+	print(np.mean(data), np.std(data),np.mean(t),np.std(t))
+	return t
