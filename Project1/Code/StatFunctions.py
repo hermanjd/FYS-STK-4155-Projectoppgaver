@@ -85,7 +85,7 @@ def BootstraFunction(data, datapoints):
 	print(np.mean(data), np.std(data),np.mean(t),np.std(t))
 	return t
 
-def PolynomialOLSBootstrapRegression(x, y, z, testSize, polynomialDegrees, bootstrapDegree):
+def PolynomialOLSBootstrapResampling(x, y, z, testSize, polynomialDegrees, bootstrapDegree):
 	x_train, x_test, y_train, y_test, z_train, z_test = train_test_split(x,y,z,test_size=testSize)
 	polynomialDegrees += 1
 	error = np.zeros(polynomialDegrees)
@@ -107,4 +107,40 @@ def PolynomialOLSBootstrapRegression(x, y, z, testSize, polynomialDegrees, boots
 		error[i] = np.mean( np.mean((arr - arr2)**2, axis=0, keepdims=True) )
 		bias[i] = np.mean( (arr - np.mean(arr2, axis=0, keepdims=True))**2 )
 		variance[i] = np.mean( np.var(arr2, axis=0, keepdims=True) )
+	return polydegree, error, bias, variance
+
+def PolynomialOLSCrossValidation(x, y, z, polynomialDegrees, k):
+	polynomialDegrees += 1
+	error = np.zeros(polynomialDegrees)
+	bias = np.zeros(polynomialDegrees)
+	variance = np.zeros(polynomialDegrees)
+	polydegree = np.zeros(polynomialDegrees)
+	x_split = np.array_split(x, k)
+	y_split = np.array_split(y, k)
+	z_split = np.array_split(z, k)
+
+	for i in range(0, polynomialDegrees):
+		poly_error = np.zeros(k)
+		poly_bias = np.zeros(k)
+		poly_variance = np.zeros(k)
+		for j in range(k):
+			x_train = np.delete(x_split, j, axis=0).flatten()
+			y_train = np.delete(y_split, j, axis=0).flatten()
+			z_train = np.delete(z_split, j, axis=0).flatten()
+			x_test = x_split[j]
+			y_test = y_split[j]
+			z_test = z_split[j]
+			designMatrix = create_X(x_train,y_train,i)
+			B = findBetaValues(designMatrix,z_train)
+			testMatrix = create_X(x_test,y_test,i)
+			Y = findY(testMatrix,B)
+			poly_error[i] = np.mean( np.mean((z_test - Y)**2, axis=0, keepdims=True) )
+			poly_bias[i] = np.mean( (z_test - np.mean(Y, axis=0, keepdims=True))**2 )
+			poly_variance[i] = np.mean( np.var(Y, axis=0, keepdims=True) )
+
+		error[i] = np.mean( poly_error)
+		bias[i] = np.mean( poly_bias )
+		variance[i] = np.mean( poly_variance )
+		polydegree[i] = i
+		
 	return polydegree, error, bias, variance
