@@ -75,8 +75,8 @@ def FrankeFunction(x,y):
 def FrankeFunctionWithNoise(x,y,noise):
     frank = FrankeFunction(x,y)
     return frank + np.random.normal(0, noise, frank.shape)
-
-def BootstraFunction(data, datapoints):
+#
+def BootstraFunction(data, datapoints, n_samples=4):
 	t = np.zeros(datapoints)
 	n= len(data)
 	for i in range (datapoints):
