@@ -1,7 +1,8 @@
 import numpy as np
 from matplotlib import cm
 import numpy as np
-
+from sklearn.model_selection import train_test_split
+from sklearn.utils import resample
 
 #Function for making design matrix (stolen from code examples)
 def create_X(x, y, n ):
@@ -83,3 +84,27 @@ def BootstraFunction(data, datapoints):
 	# analysis    
 	print(np.mean(data), np.std(data),np.mean(t),np.std(t))
 	return t
+
+def PolynomialOLSBootstrapRegression(x, y, z, testSize, polynomialDegrees, bootstrapDegree):
+	x_train, x_test, y_train, y_test, z_train, z_test = train_test_split(x,y,z,test_size=testSize)
+	polynomialDegrees += 1
+	error = np.zeros(polynomialDegrees)
+	bias = np.zeros(polynomialDegrees)
+	variance = np.zeros(polynomialDegrees)
+	polydegree = np.zeros(polynomialDegrees)
+	for i in range(0, polynomialDegrees):
+		z_pred = []
+		for j in range(bootstrapDegree):
+			x_, y_, z_ = resample(x_train, y_train, z_train)
+			designMatrix = create_X(x_,y_,i)
+			B = findBetaValues(designMatrix,z_)
+			testMatrix = create_X(x_test,y_test,i)
+			Y = findY(testMatrix,B)
+			z_pred.append(np.asarray(Y))
+		arr = np.asarray(z_test)
+		arr2 = np.asarray(z_pred)
+		polydegree[i] = i
+		error[i] = np.mean( np.mean((arr - arr2)**2, axis=0, keepdims=True) )
+		bias[i] = np.mean( (arr - np.mean(arr2, axis=0, keepdims=True))**2 )
+		variance[i] = np.mean( np.var(arr2, axis=0, keepdims=True) )
+	return polydegree, error, bias, variance
