@@ -120,9 +120,8 @@ def PolynomialOLSCrossValidation(x, y, z, polynomialDegrees, k):
 	z_split = np.array_split(z, k)
 
 	for i in range(0, polynomialDegrees):
-		poly_error = np.zeros(k)
-		poly_bias = np.zeros(k)
-		poly_variance = np.zeros(k)
+		z_pred = []
+		z_testArray = []
 		for j in range(k):
 			x_train = np.delete(x_split, j, axis=0).flatten()
 			y_train = np.delete(y_split, j, axis=0).flatten()
@@ -134,13 +133,15 @@ def PolynomialOLSCrossValidation(x, y, z, polynomialDegrees, k):
 			B = findBetaValues(designMatrix,z_train)
 			testMatrix = create_X(x_test,y_test,i)
 			Y = findY(testMatrix,B)
-			poly_error[i] = np.mean( np.mean((z_test - Y)**2, axis=0, keepdims=True) )
-			poly_bias[i] = np.mean( (z_test - np.mean(Y, axis=0, keepdims=True))**2 )
-			poly_variance[i] = np.mean( np.var(Y, axis=0, keepdims=True) )
-
-		error[i] = np.mean( poly_error)
-		bias[i] = np.mean( poly_bias )
-		variance[i] = np.mean( poly_variance )
+			z_pred.append(np.asarray(Y))
+			z_testArray.append(np.asarray(z_test))
+		
+		arr = np.asarray(z_testArray).flatten()
+		arr2 = np.asarray(z_pred).flatten()
+		print(arr.shape)
 		polydegree[i] = i
+		error[i] = np.mean( np.mean((arr - arr2)**2, axis=0, keepdims=True) )
+		bias[i] = np.mean( (arr - np.mean(arr2, axis=0, keepdims=True))**2 )
+		variance[i] = np.mean( np.var(arr2, axis=0, keepdims=True) )
 		
 	return polydegree, error, bias, variance

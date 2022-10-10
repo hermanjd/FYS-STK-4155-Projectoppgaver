@@ -4,7 +4,7 @@ import numpy as np
 import StatFunctions
 import matplotlib.pyplot as plt
 
-N = 70
+N = 60
 polynomialDegrees = 5
 x = np.random.uniform(0, 1, N)
 y = np.random.uniform(0, 1, N)
