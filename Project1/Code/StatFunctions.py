@@ -75,8 +75,8 @@ def FrankeFunction(x,y):
 def FrankeFunctionWithNoise(x,y,noise):
     frank = FrankeFunction(x,y)
     return frank + np.random.normal(0, noise, frank.shape)
-#
-def BootstraFunction(data, datapoints, n_samples=4):
+
+def BootstraFunction(data, datapoints):
 	t = np.zeros(datapoints)
 	n= len(data)
 	for i in range (datapoints):
@@ -112,8 +112,6 @@ def PolynomialOLSBootstrapResampling(x, y, z, testSize, polynomialDegrees, boots
 def PolynomialOLSCrossValidation(x, y, z, polynomialDegrees, k):
 	polynomialDegrees += 1
 	error = np.zeros(polynomialDegrees)
-	bias = np.zeros(polynomialDegrees)
-	variance = np.zeros(polynomialDegrees)
 	polydegree = np.zeros(polynomialDegrees)
 	x_split = np.array_split(x, k)
 	y_split = np.array_split(y, k)
@@ -121,27 +119,21 @@ def PolynomialOLSCrossValidation(x, y, z, polynomialDegrees, k):
 
 	for i in range(0, polynomialDegrees):
 		z_pred = []
-		z_testArray = []
 		for j in range(k):
 			x_train = np.delete(x_split, j, axis=0).flatten()
 			y_train = np.delete(y_split, j, axis=0).flatten()
 			z_train = np.delete(z_split, j, axis=0).flatten()
 			x_test = x_split[j]
 			y_test = y_split[j]
-			z_test = z_split[j]
 			designMatrix = create_X(x_train,y_train,i)
 			B = findBetaValues(designMatrix,z_train)
 			testMatrix = create_X(x_test,y_test,i)
 			Y = findY(testMatrix,B)
 			z_pred.append(np.asarray(Y))
-			z_testArray.append(np.asarray(z_test))
 		
-		arr = np.asarray(z_testArray).flatten()
+		arr = np.asarray(z)
 		arr2 = np.asarray(z_pred).flatten()
-		print(arr.shape)
 		polydegree[i] = i
-		error[i] = np.mean( np.mean((arr - arr2)**2, axis=0, keepdims=True) )
-		bias[i] = np.mean( (arr - np.mean(arr2, axis=0, keepdims=True))**2 )
-		variance[i] = np.mean( np.var(arr2, axis=0, keepdims=True) )
-		
-	return polydegree, error, bias, variance
+		error[i] = np.mean((arr - arr2)**2)
+	
+	return polydegree, error
