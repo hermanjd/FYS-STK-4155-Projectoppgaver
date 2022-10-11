@@ -4,7 +4,7 @@ import numpy as np
 import StatFunctions
 from sklearn.model_selection import train_test_split
 
-N = 80
+N = 500
 x = np.random.uniform(0, 1, N)
 y = np.random.uniform(0, 1, N)
 z = StatFunctions.FrankeFunctionWithNoise(x,y,0.1) #adding some noise to the data
@@ -14,6 +14,6 @@ for i in range(0, 6):
 	B = StatFunctions.findBetaValues(X,z_train)
 	testMatrix = StatFunctions.create_X(x_test,y_test,i)
 	Y = StatFunctions.findY(testMatrix,B)
-	mse = StatFunctions.evaluateMSE(z_test,Y)
+	mse = np.mean((z_test-Y)**2)
 	RSquared = StatFunctions.evaluateRSquared(z_test,Y)
-	print("Polynomial degree: {} Mean square error: {} RSquared: {}".format(i,mse,RSquared))
+	print("Polynomial degree: {} Mean square error: {} RSquared: {}".format(i,"%.5f" % mse,"%.5f" %RSquared))
