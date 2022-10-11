@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 
-#Function for making design matrix (stolen from code examples)
+#Function for making design matrix (This function comes from the code examples found in https://compphysics.github.io/MachineLearning/doc/pub/week35/html/week35.html)
 def create_X(x, y, n ):
 	if len(x.shape) > 1:
 		x = np.ravel(x)
